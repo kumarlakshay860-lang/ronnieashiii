@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Please Forgive Me, My Love 💗</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 18px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Trebuchet MS", sans-serif;
+    background: linear-gradient(135deg, #ffe0eb, #eadcff, #fff0f5);
+    color: #80445f;
+    overflow-x: hidden;
+}
+
+.heart {
+    position: fixed;
+    bottom: -35px;
+    pointer-events: none;
+    z-index: 0;
+    animation: floatUp 7s linear forwards;
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-115vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.card {
+    position: relative;
+    z-index: 1;
+    width: min(92%, 440px);
+    min-height: 490px;
+    padding: 28px 22px;
+    border: 2px solid white;
+    border-radius: 30px;
+    background: #ffffffdf;
+    box-shadow: 0 15px 50px #d68eae45;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: appear .7s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.cat {
+    font-size: 100px;
+    line-height: 1.4;
+    animation: catBounce 1.6s ease-in-out infinite;
+    filter: drop-shadow(0 7px 5px #d9a3bc55);
+}
+
+@keyframes catBounce {
+    0%, 100% { transform: translateY(0) rotate(-4deg); }
+    50% { transform: translateY(-13px) rotate(4deg); }
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(22px) scale(.94); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+h1 {
+    color: #d45c91;
+    font-size: 27px;
+    margin: 15px 0;
+}
+
+p {
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.message {
+    color: #c94e83;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.6;
+    margin: 18px 0;
+    overflow-wrap: anywhere;
+}
+
+button {
+    border: none;
+    padding: 14px 28px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #ff91bd, #e879ae);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 16px #df7ba655;
+    transition: transform .2s;
+    margin-top: 18px;
+    font-family: inherit;
+}
+
+button:hover {
+    transform: scale(1.06);
+}
+
+button:disabled {
+    opacity: .75;
+    cursor: wait;
+}
+
+.letter {
+    padding: 19px;
+    background: #fff0f6;
+    border: 1px solid #ffd5e6;
+    border-radius: 20px;
+    font-size: 16px;
+    line-height: 1.9;
+    text-align: left;
+    white-space: pre-line;
+}
+
+.signature {
+    font-size: 21px;
+    color: #d45c91;
+    font-weight: bold;
+}
+
+.flower {
+    font-size: 30px;
+    animation: catBounce 2s infinite;
+}
+
+.small-note {
+    font-size: 13px;
+    color: #a96b89;
+    margin-top: 16px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="card" id="page1">
+    <div class="cat">😿</div>
+    <h1>I'm really sorry...</h1>
+    <p>Your little kitty has something to tell you 🥺💗</p>
+    <div class="message">Please forgive me? 💕</div>
+    <button onclick="showPage(2)">Next 💌</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="card hidden" id="page2">
+    <div class="cat">🥺🐱</div>
+    <h1>More sorry...</h1>
+    <p>A little kitty has a lot more apologies to give you.</p>
+    <div class="flower">🌸 💖 🌸</div>
+    <button onclick="startApologies()">Next, my love 💕</button>
+</div>
+
+<!-- PAGE 3: ONE APOLOGY AT A TIME -->
+<div class="card hidden" id="page3">
+    <div class="cat" id="kitty">🐱</div>
+    <h1>My little apology 💌</h1>
+
+    <div class="message" id="apologyText"
+         aria-live="polite"></div>
+
+    <button id="apologyButton" onclick="nextApology()">
+        Next 🥺
+    </button>
+
+    <p class="small-note">A little message from my heart 💗</p>
+</div>
+
+<!-- PAGE 4: FINAL LOVE LETTER -->
+<div class="card hidden" id="page4">
+    <div class="flower">🌷 💗 🌷</div>
+    <h1>To my precious love 💌</h1>
+
+    <div class="letter" id="finalLetter"></div>
+
+    <p class="signature">I'm really sorry, my love. 💕</p>
+    <div class="flower">🧸 💖 🌸 💖 🧸</div>
+    <p>Sending you the biggest hug ever! 🫂</p>
+</div>
+
+<script>
+const apologies = [
+    "I messed up...",
+    "I am so sorry.",
+    "I didn't mean to hurt you.",
+    "I promise I'll try not to repeat it again.",
+    "Please forgive me.",
+    "I'll do my best not to do it again.",
+    "Please forgive me, my love.",
+    "Please forgive me..."
+];
+
+const finalMessage =
+`I love you so muchhh. ❤️
+
+Please forgive me. I want you to give me a chance to make things right.
+
+I'll try my best not to hurt you again. I'm so sorry, my love. I didn't mean to hurt you.
+
+Please forgive me, please, please. 🥺💗
+
+You mean so much to me, and I want to show you how much I care through my actions, not just my words.
+
+I love you so, so muchhh, my love. ❤️🐱`;
+
+let apologyIndex = 0;
+let typingTimer = null;
+let typing = false;
+let currentRun = 0;
+
+function showPage(number) {
+    clearInterval(typingTimer);
+    typingTimer = null;
+    typing = false;
+    currentRun++;
+
+    document.querySelectorAll(".card").forEach(page => {
+        page.classList.add("hidden");
+    });
+
+    document.getElementById("page" + number).classList.remove("hidden");
+}
+
+function startApologies() {
+    showPage(3);
+    apologyIndex = 0;
+    typeMessage(apologies[0]);
+}
+
+function typeMessage(message, callback) {
+    clearInterval(typingTimer);
+    typing = true;
+
+    const run = ++currentRun;
+    const text = document.getElementById("apologyText");
+    const button = document.getElementById("apologyButton");
+
+    text.textContent = "";
+    button.disabled = true;
+    button.textContent = "One moment... 💗";
+
+    let i = 0;
+
+    typingTimer = setInterval(() => {
+        if (run !== currentRun) {
+            clearInterval(typingTimer);
+            return;
+        }
+
+        if (i >= message.length) {
+            clearInterval(typingTimer);
+            typingTimer = null;
+            typing = false;
+            button.disabled = false;
+            button.textContent = "Next 💗";
+
+            if (callback) callback();
+            return;
+        }
+
+        // Add one character at a time without mixing messages.
+        text.textContent += message.charAt(i);
+        i++;
+    }, 85);
+}
+
+function nextApology() {
+    // Prevent skipping ahead while a message is being typed.
+    if (typing) return;
+
+    apologyIndex++;
+
+    if (apologyIndex >= apologies.length) {
+        showPage(4);
+        typeFinalLetter();
+        return;
+    }
+
+    typeMessage(apologies[apologyIndex]);
+}
+
+function typeFinalLetter() {
+    const letter = document.getElementById("finalLetter");
+    letter.textContent = "";
+
+    let i = 0;
+
+    const timer = setInterval(() => {
+        if (i >= finalMessage.length) {
+            clearInterval(timer);
+            return;
+        }
+
+        letter.textContent += finalMessage.charAt(i);
+        i++;
+    }, 28);
+}
+
+// Floating hearts and flowers.
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+
+    const decorations = ["💗", "💕", "🌸", "💖", "✨", "🌷"];
+    heart.textContent =
+        decorations[Math.floor(Math.random() * decorations.length)];
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (15 + Math.random() * 18) + "px";
+    heart.style.animationDuration = (5 + Math.random() * 5) + "s";
+
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 10000);
+}
+
+setInterval(createHeart, 450);
+</script>
+
+</body>
+</html>
